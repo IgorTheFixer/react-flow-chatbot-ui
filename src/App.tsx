@@ -1,33 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Flow from "./components/Flow"
+import Navbar from './components/Navbar'
+import Input from './components/Input'
+import { useState } from 'react'
+import { Configuration, OpenAIApi } from "openai";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [text, setText] = useState('')
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Navbar />
+      <div className="w-screen h-screen flex flex-row">
+        <Flow />
+        <div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
+          <Input 
+            label="Hello, I'm ChatGPT, how can I help you today?"
+            onChange={(e:any) => {setText(e.target.value)}}
+            id="user input"
+            value={text}
+          />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

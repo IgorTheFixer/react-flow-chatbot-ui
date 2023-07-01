@@ -1,0 +1,67 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import { BsSearch, BsBell, BsChevronBarDown } from 'react-icons/bs';
+
+// import MobileMenu from './MobileMenu';
+import AccountMenu from './AccountMenu';
+import NavbarItem from './NavbarItem';
+
+const TOP_OFFSET = 66;
+
+const Navbar = () => {
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showBackground, setShowBackground] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log(window.scrollY)
+      if (window.scrollY >= TOP_OFFSET) {
+        setShowBackground(true)
+      } else {
+        setShowBackground(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  const toggleAccountMenu = useCallback(() => {
+    setShowAccountMenu((current) => !current);
+  }, []);
+
+  const toggleMobileMenu = useCallback(() => {
+    setShowMobileMenu((current) => !current);
+  }, []);
+
+  return (
+    <nav className="w-full fixed z-40">
+      <div className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 bg-[#9c63ff]`}>
+      {/* <div className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 ${showBackground ? 'bg-[#9c63ff] bg-opacity-90' : ''}`}></div> */}
+        <img src="/images/logo.png" className="h-4 lg:h-7" alt="logo" />
+        <div className="flex-row ml-8 gap-7 hidden lg:flex">
+          <NavbarItem label="File"/>
+          <NavbarItem label="Edit"/>
+          <NavbarItem label="Navigate"/>
+          <NavbarItem label="Settings"/>
+          <NavbarItem label="About"/>
+        </div>
+        <div className="flex flex-row ml-auto gap-7 items-center">
+          <div onClick={toggleAccountMenu} className="flex flex-row items-center gap-2 cursor-pointer relative">
+            <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
+              <img src="/images/default-blue.png" alt="" />
+            </div>
+            <NavbarItem label="Menu"/>
+            <BsChevronBarDown className={`w-4 text-white fill-white transition ${showAccountMenu ? 'rotate-180' : 'rotate-0'}`} />
+            <AccountMenu visible={showAccountMenu} />
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+export default Navbar;
